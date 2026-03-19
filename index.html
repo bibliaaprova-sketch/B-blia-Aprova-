@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bíblia Aprova | Comece seu Estudo Bíblico</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700;800&family=Syncopate:wght@400;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
+                        display: ['Syncopate', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        navy: {
+                            400: '#334155',
+                            600: '#1E293B',
+                            800: '#0F172A',
+                            900: '#0B1120',
+                        },
+                        jungle: {
+                            400: '#34D399',
+                            500: '#10B981',
+                            600: '#059669',
+                            800: '#065F46',
+                            900: '#064E3B',
+                        },
+                        surface: '#FFFFFF',
+                        background: '#FAFAFA',
+                        ink: '#0F172A',
+                        accent: '#059669'
+                    },
+                    animation: {
+                        'pulse-glow': 'pulseGlow 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'beam': 'beam 2.5s infinite',
+                    },
+                    keyframes: {
+                        pulseGlow: {
+                            '0%, 100%': { opacity: 0.6, transform: 'scale(1)' },
+                            '50%': { opacity: 1, transform: 'scale(1.05)' },
+                        },
+                        beam: {
+                            '0%': { transform: 'translateX(-100%) skewX(-15deg)' },
+                            '100%': { transform: 'translateX(200%) skewX(-15deg)' },
+                        },
+                        brandingFloat: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-3px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Style Overrides -->
+    <style>
+        :root {
+            --navy-900: #0B1120;
+            --navy-800: #0F172A;
+            --jungle-500: #10B981;
+            --jungle-400: #34D399;
+        }
+
+        body {
+            background-color: #FAFAFA;
+            color: #0F172A;
+            overflow-x: hidden;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        /* Ambient Noise */
+        .ambient-noise {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none;
+            z-index: 50;
+            opacity: 0.1;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* Grid Pattern */
+        .bg-grid {
+            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 60px 60px;
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+        }
+
+        /* Lenis Smooth Scroll */
+        html.lenis {
+            height: auto;
+        }
+        .lenis.lenis-smooth {
+            scroll-behavior: auto;
+        }
+        .lenis.lenis-smooth [data-lenis-prevent] {
+            overscroll-behavior: contain;
+        }
+        .lenis.lenis-stopped {
+            overflow: hidden;
+        }
+
+        /* Glass Navbar - Light Theme */
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+            transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+            will-change: transform, backdrop-filter;
+            transform: translateZ(0);
+        }
+        .glass-nav.scrolled {
+            background: rgba(255, 255, 255, 0.9);
+            height: 70px;
+        }
+
+        /* Hero Video Container */
+        .hero-video-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            overflow: hidden;
+        }
+        .hero-video-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 45%; /* Pushed down slightly to avoid head cut by nav */
+            filter: brightness(1.05) contrast(1.1) saturate(1.1); /* Refined for new video */
+        }
+        /* Readability Overlay */
+        .hero-video-container::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to right, transparent 40%, rgba(11, 31, 59, 0.5) 100%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Background Glows */
+        .glow-sphere {
+            position: absolute;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.12) 0%, rgba(16, 185, 129, 0.04) 40%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1;
+            transform: translateZ(0);
+            will-change: transform, opacity;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 40; /* Increased to 40 to ensure it always creates a stacking context above #essence */
+            min-height: 100vh; /* Reduced to ensure sections are independent */
+        }
+        .hero-text-sticky {
+            position: relative; /* Changed from sticky to relative for independence */
+            top: 0;
+            height: 100vh;
+            display: flex;
+            align-items: flex-end; /* Align to bottom */
+            justify-content: space-between; /* Split: Left and Right */
+            padding-left: 5%;
+            padding-right: 5%;
+            padding-bottom: 12vh; /* Increased bottom padding */
+            padding-top: 140px; /* Safe Area: Prevent navbar overlap */
+            pointer-events: none;
+        }
+        .hero-text-sticky > div {
+            pointer-events: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        .hero-side-left {
+            align-items: flex-start;
+        }
+        .hero-side-right {
+            align-items: flex-end;
+            color: #FFFFFF; /* Buttons area stays white text */
+        }
+
+        .hero-title {
+            font-size: 5rem !important; /* Slightly reduced for better fit */
+            letter-spacing: -0.02em; /* Reduced spacing for elegance */
+            color: transparent;
+            -webkit-text-stroke: 1px rgba(255, 255, 255, 0.4);
+            transition: all 0.5s ease;
+            cursor: default;
+            text-align: left;
+            line-height: 1;
+            position: relative;
+        }
+        .hero-title::before {
+            content: attr(data-text);
+            position: absolute;
+            left: 0; /* Align fill from left */
+            top: 0;
+            white-space: nowrap;
+            width: 0;
+            overflow: hidden;
+        }
+        .hero-title:hover::before {
+            width: 101%; /* Slight over-width to ensure no letter is cut */
+        }
+        .hero-title:hover {
+            -webkit-text-stroke: 1px transparent;
+        }
+
+        .hero-btns {
+            gap: 1.2rem !important;
+            display: flex;
+            flex-direction: row;
+        }
+        .hero-btns button {
+            padding: 0.8rem 2rem !important;
+            font-size: 0.75rem !important;
+            border-radius: 999px !important; /* Rounded-full */
+            font-family: 'Plus Jakarta Sans', sans-serif !important;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            font-weight: 500;
+        }
+        .beam-button {
+            position: relative;
+            overflow: hidden;
+            background: #0B1120; /* Deep Navy */
+            color: #FFFFFF;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 20px rgba(11, 17, 32, 0.4); 
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .beam-button::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.1), transparent);
+            transform: skewX(-20deg);
+        }
+        .beam-button:hover::before {
+            animation: beam 1.2s infinite;
+        }
+        .beam-button:hover {
+            border-color: rgba(16, 185, 129, 0.4);
+            box-shadow: 0 0 30px rgba(16, 185, 129, 0.2);
+        }
+
+        .beam-button-outline {
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #FFFFFF;
+            background: rgba(11, 17, 32, 0.4); /* Translucent Navy */
+            backdrop-filter: blur(12px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 6px;
+        }
+        .beam-button-outline:hover {
+            border-color: #FFFFFF;
+            background: rgba(11, 17, 32, 0.7);
+            transform: translateY(-3px);
+            box-shadow: 0 0 25px rgba(11, 17, 32, 0.3);
+        }
+
+        /* Icon Refinement */
+        iconify-icon {
+            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.2));
+            transition: transform 0.3s ease;
+        }
+        button:hover iconify-icon {
+            transform: scale(1.2);
+        }
+
+        /* Second Fold Specific Styles - REDESIGNED FOR WHITE THEME */
+        #essence {
+            background-color: #FAFAFA;
+            color: #0F172A;
+            transition: background-color 0.5s ease;
+        }
+
+        .bg-grid-white-essence {
+            background-image: linear-gradient(to right, rgba(15, 23, 42, 0.03) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(15, 23, 42, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+        }
+
+        .section-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.3em;
+            color: #059669; /* Jungle Green as per design system */
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .section-tag::after {
+            content: '';
+            width: 40px;
+            height: 1px;
+            background: #059669;
+            opacity: 0.3;
+        }
+
+        .headline-large {
+            font-family: 'Syncopate', sans-serif;
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -0.05em;
+            text-transform: uppercase;
+            color: #0F172A; /* Deep Navy text */
+        }
+        .headline-stroke {
+            color: transparent;
+            -webkit-text-stroke: 1px rgba(15, 23, 42, 0.2);
+            transition: -webkit-text-stroke 0.5s ease, color 0.5s ease;
+        }
+
+        /* Interactive Text Box - Premium Light Version */
+        /* Removed old complex card styles as they were replaced with direct tailwind utility classes for the new design */
+
+
+
+        .reveal-up, .reveal-left, .reveal-card-solid, .reveal-up-sobre, .reveal-left-sobre, .reveal-up-glow, .reveal-left-glow, .welcome-block, .method-block {
+            will-change: transform, opacity;
+            transform: translateZ(0);
+        }
+
+        .reveal-up {
+            opacity: 0;
+            transform: translateY(30px);
+            /* Blur removed as requested */
+        }
+
+        .reveal-card-solid {
+            transform: translateY(30px);
+            /* Solid starting state: 100% opacity, no blur */
+            opacity: 1;
+        }
+        
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-40px);
+            /* Blur removed as requested */
+        }
+
+        .method-block, .reveal-up-sobre, .reveal-up-glow {
+            opacity: 0;
+            transform: translateY(40px);
+        }
+        .reveal-left-sobre {
+            opacity: 0;
+            transform: translateX(-40px);
+        }
+        .reveal-left-glow {
+            opacity: 0;
+            transform: translateX(40px);
+        }
+
+        /* SplitType Animations */
+        .line-wrapper {
+            overflow: hidden;
+        }
+        
+        /* Welcome Typographic Block - System 8 Strict */
+        .welcome-block {
+            position: absolute;
+            left: 5%;
+            bottom: 12vh;
+            display: flex;
+            flex-direction: row; /* Horizontal line guaranteed */
+            gap: 0.8rem;
+            align-items: center;
+            z-index: 100; /* Super enforced to overlap fold 2 bg */
+            pointer-events: none;
+            white-space: nowrap;
+        }
+        .text-reveal-wrapper {
+            overflow: hidden;
+            display: inline-flex;
+            vertical-align: bottom;
+        }
+        .text-reveal-content {
+            transform: translateY(110%);
+            opacity: 0;
+            /* GSAP handles transition */
+            display: block;
+        }
+        .reveal-active .text-reveal-content {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        .welcome-title-line {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.25rem; /* Minimalist & Clean */
+            font-weight: 500;
+            line-height: 1.5;
+            letter-spacing: 0.15em;
+            text-transform: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.4s ease;
+            cursor: default;
+            pointer-events: auto;
+        }
+        .welcome-title-line:hover {
+            transform: scale(1.03);
+            filter: brightness(1.2);
+        }
+        .line-navy { color: #0B1F3B; }
+        .line-green { 
+            color: #16C784; 
+            font-weight: 600;
+        }
+        
+        /* Mobile Adjustments */
+        @media (max-width: 768px) {
+            .welcome-block {
+                bottom: 8vh;
+                left: 5%;
+                flex-direction: row;
+                gap: 0.5rem;
+                justify-content: flex-start;
+            }
+            .welcome-title-line {
+                font-size: 1.6rem;
+            }
+            .hero-text-sticky {
+                padding-left: 0;
+                justify-content: center;
+                text-align: center;
+                padding-top: 110px; /* Safe Area Mobile */
+            }
+            .hero-text-sticky > div {
+                max-width: 90%;
+            }
+            .hero-title {
+                font-size: 2.2rem !important;
+            }
+            .hero-btns {
+                flex-direction: column;
+                width: 100%;
+            }
+            .hero-btns button {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        /* Fourth Fold - Glow Effect from Gemini Template */
+        .flashlight-card-premium {
+            position: relative;
+            background: rgba(11, 31, 58, 0.4); /* Dark Navy Glass */
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            overflow: hidden;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .flashlight-card-premium::before {
+            content: "";
+            position: absolute;
+            inset: 0px;
+            background: radial-gradient(
+                900px circle at var(--mouse-x, 0) var(--mouse-y, 0),
+                rgba(16, 185, 129, 0.15), /* Jungle Green subtle glow */
+                transparent 40%
+            );
+            opacity: 0;
+            transition: opacity 0.5s;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        /* Inner outline shimmer on hover */
+        .flashlight-card-premium::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 24px;
+            padding: 1px;
+            background: radial-gradient(
+                600px circle at var(--mouse-x, 0) var(--mouse-y, 0),
+                rgba(255, 255, 255, 0.4),
+                transparent 40%
+            );
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.5s;
+            pointer-events: none;
+            z-index: 3;
+        }
+
+        .flashlight-card-premium:hover::before,
+        .flashlight-card-premium:hover::after {
+            opacity: 1;
+        }
+    </style>
+<body id="inicio" class="selection:bg-jungle-500 selection:text-white">
+    <div class="ambient-noise"></div>
+
+    <!-- NAVBAR -->
+    <nav class="fixed top-0 w-full z-50 h-20 flex items-center glass-nav translate-y-[-100%]" id="main-nav">
+        <div class="max-w-7xl mx-auto px-6 w-full flex items-center justify-between">
+            <a href="https://wa.me/message/GNEJWF5DS2VHF1" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 cursor-pointer group/brand">
+                <div class="w-10 h-10 bg-navy-800 text-white flex items-center justify-center rounded-sm transition-all duration-700 group-hover/brand:scale-110 group-hover/brand:rotate-3 group-hover/brand:shadow-[0_0_20px_rgba(22,199,132,0.3)] border border-white/10 animate-[brandingFloat_6s_ease-in-out_infinite]">
+                    <iconify-icon icon="ph:book-open-bold" class="text-xl"></iconify-icon>
+                </div>
+                <div class="flex flex-col transition-transform duration-500 group-hover/brand:translate-x-1">
+                    <span class="font-display font-bold tracking-[0.2em] text-sm text-navy-800 group-hover/brand:text-[#059669] transition-colors">BÍBLIA APROVA</span>
+                    <span class="font-mono text-[9px] text-[#059669]/80 tracking-widest uppercase group-hover/brand:text-navy-900 transition-colors">Estude a Bíblia aqui</span>
+                </div>
+            </a>
+            
+            <div class="hidden md:flex items-center gap-8 font-mono text-[11px] font-medium tracking-[0.15em] uppercase text-navy-600">
+                <a href="#inicio" class="hover:text-jungle-400 transition-colors relative after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-px after:bg-jungle-500 hover:after:w-full after:transition-all">Início</a>
+                <a href="#sobre" class="hover:text-jungle-400 transition-colors relative after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-px after:bg-jungle-500 hover:after:w-full after:transition-all">Sobre</a>
+                <a href="#estudos" class="hover:text-jungle-400 transition-colors relative after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-px after:bg-jungle-500 hover:after:w-full after:transition-all">Estudos</a>
+            </div>
+
+        </div>
+    </nav>
+
+    <!-- VIDEO BACKGROUND -->
+    <div class="hero-video-container">
+        <div class="bg-grid opacity-20"></div>
+        <div class="glow-sphere top-[-10%] right-[-10%] animate-pulse-glow"></div>
+        <div class="glow-sphere bottom-[-10%] left-[-10%] animate-pulse-glow" style="animation-delay: -2s;"></div>
+        <video id="hero-video" preload="auto" playsinline muted loop>
+            <source src="assets/videos/Ai_bot_holding_bible_waving_delpmaspu_.mp4" type="video/mp4">
+        </video>
+    </div>
+
+    <!-- CONTENT -->
+    <section class="hero-content">
+        <div class="hero-text-sticky">
+            <!-- LEFT SIDE: Title removed as requested -->
+            <div class="hero-side-left">
+            </div>
+
+            <!-- Welcome Message: Premium Minimalist -->
+            <div class="welcome-block" id="welcome-message">
+                <div class="text-reveal-wrapper">
+                    <span class="text-reveal-content welcome-title-line">
+                        <span class="line-navy">Seja</span>
+                        <span class="line-green">bem-vindo</span>
+                    </span>
+                </div>
+            </div>
+
+            <!-- RIGHT SIDE: Buttons & Tag -->
+            <div class="hero-side-right">
+                <div class="flex items-center gap-4 opacity-0 hero-btns" id="hero-btns">
+                    <a href="https://wa.me/message/GNEJWF5DS2VHF1" target="_blank" rel="noopener noreferrer" class="bg-[#0B1320] text-white hover:bg-[#1A2639] transition-colors duration-300 font-mono text-[0.85rem] tracking-[0.15em] uppercase font-bold px-10 py-[18px] rounded-full flex items-center justify-center gap-4 group shadow-[0_8px_20px_rgba(11,19,32,0.4)]">
+                        COMEÇAR UM ESTUDO
+                        <iconify-icon icon="ph:arrow-right" class="text-lg group-hover:translate-x-1 transition-transform"></iconify-icon>
+                    </a>
+                </div>
+
+                <!-- Tag removed as requested -->
+            </div>
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 z-20 opacity-0" id="scroll-indicator">
+            <span class="font-mono text-[9px] uppercase tracking-[0.3em] text-jungle-400">Scroll para explorar</span>
+            <div class="w-5 h-9 border border-white/20 rounded-full flex justify-center p-1.5 overflow-hidden">
+                <div class="w-1 h-2 bg-jungle-500 rounded-full animate-bounce"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECOND FOLD - REVISED FOR LIGHT THEME -->
+    <section id="essence" class="relative z-[30] py-32 px-6 overflow-hidden bg-[#FFFFFF] min-h-[60vh] flex items-center" style="background-color: #FFFFFF !important;">
+        <div class="bg-grid-white-essence opacity-40"></div>
+        <div class="max-w-7xl mx-auto relative z-[30] w-full">
+            
+            <!-- Header Group -->
+            <div class="flex flex-col">
+                <div class="section-tag reveal-up mb-12 self-start opacity-70">
+                    01 // INÍCIO
+                </div>
+                
+                <div class="max-w-4xl mx-auto text-center w-full">
+                    <h2 class="font-sans font-normal text-[2.2rem] md:text-[3rem] lg:text-[3.5rem] text-[#0B1F3A] leading-[1.25] tracking-tight reveal-up transition-all duration-700 hover:scale-[1.01] hover:text-[#0B1F3A]/90 cursor-default">
+                        Estude a Bíblia com <span class="text-transparent" style="-webkit-text-stroke: 1px rgba(11, 31, 58, 0.65);">clareza</span>,<br>
+                        profundidade e fundamento<br>
+                        nas Escrituras
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- THIRD FOLD: SOBRE (ABOUT) -->
+    <section id="sobre" class="relative z-10 py-32 px-6 overflow-hidden bg-[#FAFAFA]" style="background-color: #FAFAFA !important;">
+        <!-- Subtle noise and glow for depth -->
+        <div class="absolute inset-0 z-0 pointer-events-none opacity-40 bg-[url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.85%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E')] mix-blend-overlay"></div>
+        
+        <div class="max-w-7xl mx-auto relative z-10">
+            <!-- Header Group (Grid split based on reference image) -->
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-12 mb-20 items-center">
+                
+                <!-- Left Title Column -->
+                <div class="md:col-span-7 flex flex-col gap-6 reveal-up-sobre opacity-0">
+                    <div class="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white border border-[#E2E8F0] shadow-sm w-max mb-2">
+                        <div class="w-2 h-2 rounded-full bg-[#059669] animate-pulse"></div>
+                        <span class="font-sans text-[0.8rem] font-bold tracking-widest uppercase text-[#0B1F3A]">Sobre</span>
+                    </div>
+                    
+                    <h2 class="font-sans font-normal text-[2.5rem] md:text-[3.5rem] lg:text-[4rem] text-[#0B1F3A] leading-[1.1] tracking-tight">
+                        O que é <br class="hidden md:block"> <span class="text-[#059669] font-medium inline-block relative after:content-[''] after:absolute after:bottom-1 after:left-0 after:w-full after:h-2 after:bg-[#059669]/20 after:-z-10 px-1">o Bíblia Aprova?</span>
+                    </h2>
+                </div>
+                
+                <!-- Right Introductory Text Column -->
+                <div class="md:col-span-5 reveal-up-sobre opacity-0" style="transition-delay: 100ms;">
+                    <p class="font-sans text-[#4A5568] text-[1.1rem] md:text-[1.15rem] leading-[1.8] font-medium border-l-[3px] border-[#059669]/30 pl-6 h-full flex flex-col justify-center gap-4">
+                        <span>O Bíblia Aprova é um projeto educacional que oferece estudos bíblicos progressivos baseados diretamente nas Escrituras, com o objetivo de ajudar pessoas a compreender a Bíblia de forma clara, estruturada e reflexiva.</span>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Content Grid: Cards below the unified header -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-stretch mt-8 lg:mt-12">
+                
+                <!-- Left Text Column -->
+                <div class="lg:col-span-4 flex flex-col justify-center h-full reveal-up-sobre opacity-0">
+                    <div class="prose prose-lg max-w-none text-[#4A5568] font-sans leading-[1.8] pr-4">
+                        <p class="opacity-90 font-medium text-[1.1rem]">
+                            O projeto reúne os principais temas da Bíblia, conduzindo o estudante por passagens e conceitos que revelam, de maneira conectada, a mensagem central das Escrituras.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Prominent Quote / Whatsapp Block (Moved to Right space to be 'em evidência') -->
+                <div class="lg:col-span-8 relative reveal-left-sobre opacity-0 bg-white p-10 md:p-14 rounded-[32px] border border-[#E2E8F0] shadow-[0_20px_60px_rgba(15,23,42,0.05)] overflow-hidden group h-full flex flex-col justify-between items-start">
+                    <!-- Decorative background element -->
+                    <div class="absolute -top-24 -right-24 w-80 h-80 bg-gradient-to-br from-[#059669]/10 to-transparent rounded-full blur-3xl pointer-events-none transition-transform duration-1000 group-hover:scale-150"></div>
+                    
+                    <iconify-icon icon="ph:quotes-duotone" class="text-[5rem] text-[#0B1F3A]/5 absolute top-6 left-8"></iconify-icon>
+                    
+                    <div class="relative z-10 w-full flex flex-col gap-10">
+                        <div>
+                            <h3 class="font-sans text-[#059669] text-[0.85rem] md:text-[0.95rem] font-bold tracking-widest uppercase mb-6">Para quem é esse estudo</h3>
+                            <p class="font-sans text-[#0B1F3A] text-[1.4rem] md:text-[1.7rem] leading-[1.4] tracking-tight font-medium">
+                                "O Bíblia Aprova foi pensado tanto para quem está começando a estudar a Bíblia quanto para quem deseja aprofundar seu conhecimento das Escrituras de forma organizada."
+                            </p>
+                        </div>
+                        
+                        <div class="border-t border-[#E2E8F0] pt-8 w-full mt-auto">
+                            <a href="https://wa.me/message/GNEJWF5DS2VHF1" target="_blank" rel="noopener noreferrer" class="flex flex-row items-center gap-5 group/wpp transition-all duration-300 cursor-pointer w-max">
+                                <div class="w-16 h-16 rounded-full bg-[#0B1F3A] flex items-center justify-center text-white shadow-[0_8px_20px_rgba(11,31,58,0.2)] transition-all duration-300 group-hover/wpp:bg-[#25D366] group-hover/wpp:scale-110 group-hover/wpp:shadow-[0_12px_30px_rgba(37,211,102,0.4)] relative">
+                                    <div class="absolute inset-0 rounded-full border-2 border-[#25D366] opacity-0 group-hover/wpp:animate-[ping_2s_infinite]"></div>
+                                    <iconify-icon icon="ph:whatsapp-logo-fill" class="text-3xl"></iconify-icon>
+                                </div>
+                                <div class="flex flex-col justify-center">
+                                    <p class="font-sans font-bold text-[#0B1F3A] text-[1.15rem] leading-tight mb-1 transition-colors duration-300 group-hover/wpp:text-[#25D366]">Começar estudo</p>
+                                    <p class="font-sans text-[#718096] text-[0.85rem] tracking-widest uppercase leading-none font-semibold">Chamar no Whatsapp</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOURTH FOLD: IMMERSION (VIDEO + GLOW CARDS) -->
+    <section id="estudos" class="relative z-10 py-32 md:py-48 px-6 overflow-hidden bg-[#0B1120] min-h-screen flex items-center">
+        <!-- Reusing the exact same video as background context (but absolutely positioned for this section) -->
+        <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+            <video preload="none" playsinline muted loop autoplay class="absolute inset-0 w-full h-full object-cover opacity-30 object-[center_35%] scale-105" style="filter: brightness(0.6) contrast(1.2);">
+                <!-- Assuming the global video is Ai_bot_holding_bible_waving_delpmaspu_.mp4, reusing it -->
+                <source src="assets/videos/Ai_bot_holding_bible_waving_delpmaspu_.mp4" type="video/mp4">
+            </video>
+            <!-- Overlay to ensure text readability -->
+            <div class="absolute inset-0 bg-gradient-to-t from-[#0B1120] via-transparent to-[#0B1120] opacity-90"></div>
+            <div class="absolute inset-0 bg-gradient-to-r from-[#0B1120] via-[#0B1120]/60 to-transparent"></div>
+        </div>
+
+        <div class="max-w-7xl mx-auto relative z-10 w-full flex flex-col md:flex-row items-center gap-16 lg:gap-24">
+            
+            <!-- Context Header (Left) -->
+            <div class="flex-1 w-full max-w-xl">
+                <div class="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm shadow-sm w-max mb-6 reveal-up-glow opacity-0">
+                    <iconify-icon icon="ph:sparkle-fill" class="text-[#10B981]"></iconify-icon>
+                    <span class="font-sans text-[0.8rem] font-bold tracking-widest uppercase text-white">Método Imersivo</span>
+                </div>
+
+                <h2 class="font-sans font-normal text-[2.5rem] md:text-[3.5rem] lg:text-[4rem] text-white leading-[1.1] tracking-tight mb-8 reveal-up-glow opacity-0" style="transition-delay: 100ms;">
+                    Estrutura dos <br>
+                    <span class="font-bold bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-[#10B981]">Estudos</span>
+                </h2>
+
+                <p class="font-sans text-white/70 text-[1.1rem] leading-[1.8] font-light mb-10 reveal-up-glow opacity-0" style="transition-delay: 200ms;">
+                    Os estudos do Bíblia Aprova são organizados em séries de lições que conduzem o estudante por diferentes temas presentes nas Escrituras, ajudando a compreender os ensinamentos dentro de um contexto mais amplo.<br><br>Ao longo das lições, os temas são abordados de maneira conectada, favorecendo a construção de um entendimento mais consistente da mensagem bíblica.
+                </p>
+            </div>
+
+            <!-- Topics Content (Right) -->
+            <div class="flex-1 w-full flex flex-col gap-6 lg:ml-10">
+                
+                <div class="flashlight-card-premium p-8 md:p-10 flex flex-col gap-8 group reveal-left-glow opacity-0 cursor-default" onmousemove="var r = this.getBoundingClientRect(); this.style.setProperty('--mouse-x', `${event.clientX - r.left}px`); this.style.setProperty('--mouse-y', `${event.clientY - r.top}px`);" style="transition-delay: 150ms;">
+                    
+                    <div class="relative z-10 flex flex-col gap-4">
+                        <div class="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-[#10B981] group-hover:bg-[#10B981]/20 group-hover:scale-105 transition-all duration-500">
+                            <iconify-icon icon="ph:books-duotone" class="text-[2rem]"></iconify-icon>
+                        </div>
+                        <div>
+                            <h3 class="font-sans font-bold text-white text-[1.6rem] tracking-tight mb-2">Temas abordados</h3>
+                            <p class="font-sans text-white/70 text-[1.05rem] leading-[1.6] font-light">
+                                Entre os principais temas explorados nos estudos estão:
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="relative z-10 flex flex-col items-start gap-3">
+                        <div class="px-5 py-2.5 rounded-full bg-[#0B1120]/60 border border-white/10 text-white/80 font-sans text-[0.95rem] flex items-center gap-2 hover:bg-white/10 hover:text-white hover:border-[#10B981]/40 transition-all duration-300 cursor-default">
+                            <iconify-icon icon="ph:check-circle-fill" class="text-[#10B981]"></iconify-icon>
+                            <span class="font-medium">Confiança na Bíblia</span>
+                        </div>
+                        <div class="px-5 py-2.5 rounded-full bg-[#0B1120]/60 border border-white/10 text-white/80 font-sans text-[0.95rem] flex items-center gap-2 hover:bg-white/10 hover:text-white hover:border-[#10B981]/40 transition-all duration-300 cursor-default">
+                            <iconify-icon icon="ph:check-circle-fill" class="text-[#10B981]"></iconify-icon>
+                            <span class="font-medium">Caráter de Deus</span>
+                        </div>
+                        <div class="px-5 py-2.5 rounded-full bg-[#0B1120]/60 border border-white/10 text-white/80 font-sans text-[0.95rem] flex items-center gap-2 hover:bg-white/10 hover:text-white hover:border-[#10B981]/40 transition-all duration-300 cursor-default">
+                            <iconify-icon icon="ph:check-circle-fill" class="text-[#10B981]"></iconify-icon>
+                            <span class="font-medium">Propósito da vida</span>
+                        </div>
+                        <div class="px-5 py-2.5 rounded-full bg-[#0B1120]/60 border border-white/10 text-white/80 font-sans text-[0.95rem] flex items-center gap-2 hover:bg-white/10 hover:text-white hover:border-[#10B981]/40 transition-all duration-300 cursor-default">
+                            <iconify-icon icon="ph:check-circle-fill" class="text-[#10B981]"></iconify-icon>
+                            <span class="font-medium">Ensinamentos centrais da fé cristã</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- LIBRARIES -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/lenis@1.0.45/dist/lenis.min.js"></script>
+    <script src="https://unpkg.com/split-type"></script>
+
+    <script>
+        // Initialize Lenis Smooth Scroll
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            orientation: 'vertical',
+            gestureOrientation: 'vertical',
+            smoothWheel: true,
+            wheelMultiplier: 1,
+            smoothTouch: false,
+            touchMultiplier: 2,
+            infinite: false,
+        })
+
+        function raf(time) {
+            lenis.raf(time)
+            requestAnimationFrame(raf)
+        }
+        requestAnimationFrame(raf)
+
+        // GSAP Implementation
+        gsap.registerPlugin(ScrollTrigger);
+
+        const video = document.getElementById('hero-video');
+        
+        // Wait for video metadata to be fully loaded
+        video.onloadedmetadata = function() {
+            video.pause();
+            initAnimations();
+        };
+
+        // Fallback if metadata already loaded
+        if (video.readyState >= 1) {
+            video.pause();
+            initAnimations();
+        }
+
+        function initAnimations() {
+            // 1. Hover-driven Video Interaction
+            // Using document to ensure interaction works even with overlays
+            document.addEventListener('mouseenter', () => {
+                video.play().catch(error => console.log("Video play interrupted:", error));
+            });
+
+            document.addEventListener('mouseleave', () => {
+                video.pause();
+            });
+
+            // Initial play if mouse is already over the document
+            if (document.hasFocus()) {
+                video.play().catch(() => {});
+            }
+
+            // Ensure video loops naturally
+            video.loop = true;
+
+            // 2. Entrance & Scroll Blur Animations
+            const tl = gsap.timeline();
+
+            // Set Initial states for staggered animation (Linear Reveal)
+            gsap.set(".welcome-title-line", { y: 0, opacity: 1 }); // Removed conflict, handled by GSAP fromTo directly
+            gsap.set("#hero-btns", { y: 20, opacity: 0 });
+            gsap.set("#scroll-indicator", { opacity: 0 });
+
+            // Initial Entrance Animation Path (Welcome Message included unconditionally)
+            tl.to("#main-nav", { y: 0, duration: 1.2, ease: "power4.out" })
+              .fromTo(".text-reveal-content", 
+                  { opacity: 0, y: 30 },
+                  { opacity: 1, y: 0, duration: 1.2, ease: "expo.out" }, "-=0.8")
+              .to("#hero-btns", { y: 0, opacity: 1, duration: 1, ease: "power4.out" }, "-=0.8")
+              .to("#scroll-indicator", { opacity: 1, duration: 1 }, "-=0.5");
+
+            // The aggressive fade-out and parallax for the welcome message was removed 
+            // because it caused the text to be perceived as 'hidden or overlapped' prematurely during scroll.
+
+            // 3. Navbar Scroll Effect
+            ScrollTrigger.create({
+                start: "top -50",
+                onEnter: () => document.getElementById('main-nav').classList.add('scrolled'),
+                onLeaveBack: () => document.getElementById('main-nav').classList.remove('scrolled'),
+            });
+
+            // 4. Second Fold Animations
+            const revealItems = document.querySelectorAll('.reveal-up, .reveal-left');
+            
+            revealItems.forEach((item, index) => {
+                const isLeft = item.classList.contains('reveal-left');
+                gsap.to(item, {
+                    scrollTrigger: {
+                        trigger: item,
+                        start: "top 95%", // Earlier trigger so it's evident immediately
+                        toggleActions: "play none none none",
+                    },
+                    opacity: 1,
+                    y: 0,
+                    x: 0,
+                    duration: 0.8, // Faster animation
+                    ease: "power3.out", // Snappier ease
+                    delay: index * 0.08 // Tighter stagger
+                });
+            });
+
+            // Solid Card Animation (No fade, no blur, just slide up)
+            gsap.to('.reveal-card-solid', {
+                scrollTrigger: {
+                    trigger: '.reveal-card-solid',
+                    start: "top 95%",
+                    toggleActions: "play none none none",
+                },
+                y: 0,
+                duration: 0.8,
+                ease: "power3.out"
+            });
+
+            // Headline Stroke Reveal (Parallax)
+            gsap.to(".headline-stroke", {
+                scrollTrigger: {
+                    trigger: "#essence",
+                    start: "top 80%",
+                    end: "bottom 20%",
+                    scrub: 1,
+                },
+                webkitTextStroke: "1px rgba(15, 23, 42, 0.6)",
+                duration: 1
+            });
+
+            // 5. Interactive Card Mouse Movement
+            const card = document.getElementById('interactive-card');
+            
+            if (card) {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    // Update mouse position variables for CSS flashlight effect
+                    card.style.setProperty('--mouse-x', `${x}px`);
+                    card.style.setProperty('--mouse-y', `${y}px`);
+                    
+                    const xPercent = (x / rect.width - 0.5) * 20; // Max 20deg
+                    const yPercent = (y / rect.height - 0.5) * -20;
+                    
+                    gsap.to(card, {
+                        rotateX: yPercent,
+                        rotateY: xPercent,
+                        duration: 0.5,
+                        ease: "power2.out"
+                    });
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    gsap.to(card, {
+                        rotateX: 0,
+                        rotateY: 0,
+                        duration: 0.8,
+                        ease: "elastic.out(1, 0.3)"
+                    });
+                });
+            }
+
+            // Avoid double GSAP tweening on same element to fix overlap/hiding completely
+
+            // 6. Method Blocks Animations (Faixa Final)
+            const methodBlocks = document.querySelectorAll('.method-block');
+            if (methodBlocks.length > 0) {
+                gsap.to(methodBlocks, 
+                    {
+                        scrollTrigger: {
+                            trigger: methodBlocks[0],
+                            start: "top 85%",
+                            toggleActions: "play none none none"
+                        },
+                        y: 0,
+                        opacity: 1,
+                        duration: 0.9,
+                        ease: "power3.out",
+                        stagger: 0.15
+                    }
+                );
+            }
+
+            // 7. Third Fold "Sobre" Animations
+            const sobreRevealUp = document.querySelectorAll('.reveal-up-sobre');
+            const sobreRevealLeft = document.querySelectorAll('.reveal-left-sobre');
+
+            if(sobreRevealUp.length > 0) {
+                gsap.to(sobreRevealUp, 
+                    {
+                        scrollTrigger: {
+                            trigger: "#sobre",
+                            start: "top 85%",
+                            toggleActions: "play none none none"
+                        },
+                        y: 0,
+                        opacity: 1,
+                        duration: 1.4,
+                        ease: "expo.out",
+                        stagger: 0.1
+                    }
+                );
+            }
+
+            if(sobreRevealLeft.length > 0) {
+                gsap.to(sobreRevealLeft,
+                    {
+                        scrollTrigger: {
+                            trigger: ".reveal-left-sobre",
+                            start: "top 85%",
+                            toggleActions: "play none none none"
+                        },
+                        x: 0,
+                        opacity: 1,
+                        duration: 1.5,
+                        ease: "expo.out"
+                    }
+                );
+            }
+
+            // 8. Fourth Fold "Imersão" Animations (Glow Cards)
+            const glowRevealUp = document.querySelectorAll('.reveal-up-glow');
+            const glowRevealLeft = document.querySelectorAll('.reveal-left-glow');
+
+            if(glowRevealUp.length > 0) {
+                gsap.to(glowRevealUp, 
+                    {
+                        scrollTrigger: {
+                            trigger: "#estudos",
+                            start: "top 75%",
+                            toggleActions: "play none none none"
+                        },
+                        y: 0,
+                        opacity: 1,
+                        duration: 1,
+                        ease: "power3.out",
+                        stagger: 0.15
+                    }
+                );
+            }
+
+            if(glowRevealLeft.length > 0) {
+                gsap.to(glowRevealLeft,
+                    {
+                        scrollTrigger: {
+                            trigger: ".reveal-left-glow",
+                            start: "top 75%",
+                            toggleActions: "play none none none"
+                        },
+                        x: 0,
+                        opacity: 1,
+                        duration: 1.2,
+                        ease: "power3.out",
+                        stagger: 0.2
+                    }
+                );
+            }
+
+            // 9. Smooth Scroll Anchor Navigation
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    
+                    if (targetElement) {
+                        lenis.scrollTo(targetElement, {
+                            offset: -80, // Offset for fixed navbar height
+                            duration: 1.2,
+                            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
+                        });
+                    }
+                });
+            });
+        }
+    </script>
+
+    <!-- Floating WhatsApp Button -->
+    <a href="https://wa.me/message/GNEJWF5DS2VHF1" target="_blank" rel="noopener noreferrer" 
+       class="fixed bottom-6 right-6 md:bottom-10 md:right-10 z-[100] w-14 h-14 md:w-16 md:h-16 bg-[#25D366] text-white rounded-full flex items-center justify-center shadow-[0_8px_24px_rgba(37,211,102,0.4)] transition-all duration-300 hover:scale-110 hover:shadow-[0_12px_32px_rgba(37,211,102,0.6)] group">
+        <iconify-icon icon="ph:whatsapp-logo-fill" class="text-3xl md:text-4xl transition-transform duration-300 group-hover:-rotate-[-8deg]"></iconify-icon>
+        
+        <!-- Ripple effect behind -->
+        <div class="absolute inset-0 rounded-full border-2 border-[#25D366] opacity-0 group-hover:animate-[ping_2s_infinite]"></div>
+    </a>
+</body>
+</html>
